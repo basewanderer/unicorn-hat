@@ -144,16 +144,42 @@ def get_index_from_xy(x, y):
     return index
 
 
-def set_pixel_hsv(x, y, h, s, v):
+def set_pixel_hsv(x, y, *args):
     """Set a single pixel to a colour using HSV"""
+    
+    pixel_error = 'Pixel arguments must be given as (h, s, v) or h, s, v'
+
+    if len(args) == 1:
+        pixel = args[0]
+        if len(pixel) != 3:
+            raise ValueError(pixel_error)
+    elif len(args) == 3:
+        pixel = args
+    else:
+        raise ValueError(pixel_error)
+
+    h, s, v = [n for n in pixel]
     index = get_index_from_xy(x, y)
     if index is not None:
         r, g, b = [int(n*255) for n in colorsys.hsv_to_rgb(h, s, v)]
         ws2812.setPixelColorRGB(index, r, g, b)
 
 
-def set_pixel(x, y, r, g, b):
+def set_pixel(x, y, *args):
     """Set a single pixel to RGB colour"""
+
+    pixel_error = 'Pixel arguments must be given as (r, g, b) or r, g, b'
+
+    if len(args) == 1:
+            pixel = args[0]
+            if len(pixel) != 3:
+                raise ValueError(pixel_error)
+    elif len(args) == 3:
+            pixel = args
+    else:
+            raise ValueError(pixel_error)
+
+    r, g, b = [n for n in pixel]
     index = get_index_from_xy(x, y)
     if index is not None:
         ws2812.setPixelColorRGB(index, r, g, b)
